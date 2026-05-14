@@ -15,7 +15,7 @@
   z-index: 1;
   animation: cardRise 1s ease-out;
   box-shadow:
-    inset 0 0 200px rgba(255, 107, 157, 0.03),
+    inset 0 0 200px rgba(108, 92, 231, 0.03),
     var(--shadow-x, 0px) var(--shadow-y, 0px) 60px rgba(0, 0, 0, 0.4);
 }
 
@@ -63,12 +63,12 @@
   border-radius: 50%;
   background: conic-gradient(
     from var(--ring-angle, 0deg),
-    #ff6b9d,
-    #ff9ecd,
+    #6c5ce7,
+    #a29bfe,
+    #00cec9,
+    #fdcb6e,
     #fd79a8,
-    #ffb3d0,
-    #e84393,
-    #ff6b9d
+    #6c5ce7
   );
   animation: ringSpin 6s linear infinite;
   -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 4px), #000 calc(100% - 4px));
@@ -124,14 +124,14 @@
 }
 
 .card-name:hover {
-  text-shadow: 0 0 40px rgba(255, 107, 157, 0.6), 0 0 80px rgba(255, 107, 157, 0.3);
+  text-shadow: 0 0 40px rgba(168, 143, 255, 0.6), 0 0 80px rgba(108, 92, 231, 0.3);
 }
 
 .card-underline {
   width: 60px;
   height: 4px;
   border-radius: 2px;
-  background: linear-gradient(90deg, #ff6b9d, #e84393, #fd79a8);
+  background: linear-gradient(90deg, #6c5ce7, #fdcb6e, #00cec9);
   margin-bottom: 0.6rem;
 }
 
@@ -173,10 +173,10 @@
 }
 
 .tag:hover {
-  background: rgba(255, 107, 157, 0.18);
-  border-color: rgba(255, 107, 157, 0.4);
+  background: rgba(108, 92, 231, 0.18);
+  border-color: rgba(108, 92, 231, 0.4);
   transform: translateY(-3px);
-  box-shadow: 0 6px 20px rgba(255, 107, 157, 0.25);
+  box-shadow: 0 6px 20px rgba(108, 92, 231, 0.25);
 }
 
 .tag-icon {
@@ -191,7 +191,7 @@
 
 @keyframes tagGlow {
   0%, 100% { box-shadow: 0 0 0 rgba(108, 92, 231, 0); }
-  50% { box-shadow: 0 0 14px rgba(255, 107, 157, 0.12); }
+  50% { box-shadow: 0 0 14px rgba(108, 92, 231, 0.12); }
 }
 
 /* ========== 分割线 ========== */
@@ -249,7 +249,7 @@
   width: 5px;
   min-height: 8px;
   border-radius: 3px;
-  background: linear-gradient(to top, #ff6b9d, #fd79a8, #ffb3d0);
+  background: linear-gradient(to top, #6c5ce7, #00cec9, #fdcb6e);
   animation: eqJump 0.6s ease-in-out infinite alternate;
 }
 
@@ -283,7 +283,7 @@
 }
 
 .social-link:hover {
-  background: rgba(255, 107, 157, 0.3);
+  background: rgba(108, 92, 231, 0.3);
   color: #fff;
   transform: translateY(-4px);
   box-shadow: 0 8px 28px rgba(108, 92, 231, 0.35);
