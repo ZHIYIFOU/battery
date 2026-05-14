@@ -16,7 +16,7 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
     "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial,
     sans-serif;
-  background: #06061a;
+  background: #1a0814;
   color: #e0e0e0;
   width: 100vw;
   height: 100vh;
@@ -24,14 +24,14 @@ body {
   position: relative;
 }
 
-/* ---- 浮动光晕 ---- */
+/* ---- 粉色光晕 ---- */
 body::before,
 body::after {
   content: '';
   position: fixed;
   border-radius: 50%;
   filter: blur(120px);
-  opacity: 0.4;
+  opacity: 0.45;
   pointer-events: none;
   z-index: 0;
 }
@@ -39,7 +39,7 @@ body::after {
 body::before {
   width: 600px;
   height: 600px;
-  background: radial-gradient(circle, #6c5ce7 0%, transparent 70%);
+  background: radial-gradient(circle, #ff6b9d 0%, transparent 70%);
   top: -200px;
   left: -150px;
   animation: floatOrb1 16s ease-in-out infinite;
@@ -48,7 +48,7 @@ body::before {
 body::after {
   width: 500px;
   height: 500px;
-  background: radial-gradient(circle, #00cec9 0%, transparent 70%);
+  background: radial-gradient(circle, #e84393 0%, transparent 70%);
   bottom: -180px;
   right: -120px;
   animation: floatOrb2 18s ease-in-out infinite;
@@ -72,9 +72,9 @@ body::after {
   width: 500px;
   height: 500px;
   border-radius: 50%;
-  background: radial-gradient(circle, #fdcb6e 0%, transparent 70%);
+  background: radial-gradient(circle, #fd79a8 0%, transparent 70%);
   filter: blur(100px);
-  opacity: 0.2;
+  opacity: 0.25;
   pointer-events: none;
   z-index: 0;
   top: 50%;
@@ -92,7 +92,7 @@ body::after {
   font-size: clamp(4rem, 12vw, 9rem);
   font-weight: 900;
   letter-spacing: 0.3em;
-  color: rgba(255, 255, 255, 0.015);
+  color: rgba(255, 150, 180, 0.02);
   pointer-events: none;
   z-index: 0;
   white-space: nowrap;
@@ -101,16 +101,21 @@ body::after {
 }
 
 @keyframes watermarkPulse {
-  0%, 100% { color: rgba(255, 255, 255, 0.015); }
-  50% { color: rgba(255, 255, 255, 0.03); }
+  0%, 100% { color: rgba(255, 150, 180, 0.02); }
+  50% { color: rgba(255, 150, 180, 0.045); }
 }
 
-/* ---- 粒子画布 ---- */
-.canvas-particles {
+/* ---- Canvas 层 ---- */
+.canvas-particles,
+.canvas-balloons {
   position: fixed;
   inset: 0;
   z-index: 0;
   pointer-events: none;
+}
+
+.canvas-balloons {
+  z-index: 0;
 }
 
 #root {
