@@ -44,30 +44,15 @@ const profile = {
     },
   ],
   songs: [
-    {
-      title: '出现又离开',
-      url: 'https://music.163.com/#/song?id=1407359250',
-    },
-    {
-      title: '日落大道',
-      url: 'https://music.163.com/#/song?id=432506856',
-    },
-    {
-      title: '男孩',
-      url: 'https://music.163.com/#/song?id=432506834',
-    },
-    {
-      title: '表态',
-      url: 'https://music.163.com/#/song?id=1407359248',
-    },
-    {
-      title: '私奔',
-      url: 'https://music.163.com/#/song?id=432506841',
-    },
+    { title: '出现又离开', url: 'https://music.163.com/#/song?id=1407359250' },
+    { title: '日落大道', url: 'https://music.163.com/#/song?id=432506856' },
+    { title: '男孩', url: 'https://music.163.com/#/song?id=432506834' },
+    { title: '表态', url: 'https://music.163.com/#/song?id=1407359248' },
+    { title: '私奔', url: 'https://music.163.com/#/song?id=432506841' },
   ],
 }
 
-/* ========== 粒子网络背景 ========== */
+/* ========== 粒子网络背景（增强版） ========== */
 function ParticleNetwork() {
   const canvasRef = useRef(null)
   const mouseRef = useRef({ x: -9999, y: -9999 })
@@ -77,9 +62,9 @@ function ParticleNetwork() {
     if (!canvas) return
     const ctx = canvas.getContext('2d')
     const particles = []
-    const COUNT = 80
-    const CONNECT = 130
-    const MOUSE_R = 120
+    const COUNT = 120
+    const CONNECT = 150
+    const MOUSE_R = 200
 
     const resize = () => {
       canvas.width = window.innerWidth
@@ -92,9 +77,9 @@ function ParticleNetwork() {
       particles.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.6,
-        vy: (Math.random() - 0.5) * 0.6,
-        r: Math.random() * 1.8 + 0.5,
+        vx: (Math.random() - 0.5) * 0.8,
+        vy: (Math.random() - 0.5) * 0.8,
+        r: Math.random() * 2.5 + 1.2,
       })
     }
 
@@ -109,14 +94,23 @@ function ParticleNetwork() {
       const mx = mouseRef.current.x
       const my = mouseRef.current.y
 
+      // 鼠标周围的辉光
+      if (mx > 0) {
+        const glow = ctx.createRadialGradient(mx, my, 0, mx, my, 150)
+        glow.addColorStop(0, 'rgba(108, 92, 231, 0.12)')
+        glow.addColorStop(1, 'rgba(108, 92, 231, 0)')
+        ctx.fillStyle = glow
+        ctx.fillRect(mx - 150, my - 150, 300, 300)
+      }
+
       particles.forEach((p) => {
         const dx = p.x - mx
         const dy = p.y - my
         const dist = Math.sqrt(dx * dx + dy * dy)
         if (dist < MOUSE_R && dist > 0) {
-          const force = (MOUSE_R - dist) / MOUSE_R
-          p.vx += (dx / dist) * force * 0.4
-          p.vy += (dy / dist) * force * 0.4
+          const force = Math.pow((MOUSE_R - dist) / MOUSE_R, 2)
+          p.vx += (dx / dist) * force * 0.8
+          p.vy += (dy / dist) * force * 0.8
         }
         p.x += p.vx
         p.y += p.vy
@@ -128,18 +122,20 @@ function ParticleNetwork() {
         if (p.y > canvas.height) p.y = 0
       })
 
+      // 连线
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
           const dx = particles[i].x - particles[j].x
           const dy = particles[i].y - particles[j].y
           const dist = Math.sqrt(dx * dx + dy * dy)
           if (dist < CONNECT) {
-            const mx2 = (particles[i].x + particles[j].x) / 2
-            const my2 = (particles[i].y + particles[j].y) / 2
-            const toMouse = Math.sqrt((mx2 - mx) ** 2 + (my2 - my) ** 2)
-            const alpha = toMouse < 200 ? 0.06 + (1 - toMouse / 200) * 0.55 : 0.06
+            const midX = (particles[i].x + particles[j].x) / 2
+            const midY = (particles[i].y + particles[j].y) / 2
+            const toMouse = Math.sqrt((midX - mx) ** 2 + (midY - my) ** 2)
+            const alpha = toMouse < 250 ? 0.08 + (1 - toMouse / 250) * 0.7 : 0.06
+            const lineW = toMouse < 150 ? 1 : 0.5
             ctx.strokeStyle = `rgba(108, 92, 231, ${alpha})`
-            ctx.lineWidth = 0.5
+            ctx.lineWidth = lineW
             ctx.beginPath()
             ctx.moveTo(particles[i].x, particles[i].y)
             ctx.lineTo(particles[j].x, particles[j].y)
@@ -148,9 +144,18 @@ function ParticleNetwork() {
         }
       }
 
+      // 粒子
       particles.forEach((p) => {
         const toMouse = Math.sqrt((p.x - mx) ** 2 + (p.y - my) ** 2)
-        const alpha = toMouse < 150 ? 0.5 + (1 - toMouse / 150) * 0.5 : 0.2
+        const alpha = toMouse < 200 ? 0.6 + (1 - toMouse / 200) * 0.4 : 0.25
+        const glow = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 3)
+        glow.addColorStop(0, `rgba(255, 255, 255, ${alpha})`)
+        glow.addColorStop(1, 'rgba(255, 255, 255, 0)')
+        ctx.fillStyle = glow
+        ctx.beginPath()
+        ctx.arc(p.x, p.y, p.r * 3, 0, Math.PI * 2)
+        ctx.fill()
+
         ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`
         ctx.beginPath()
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2)
@@ -173,8 +178,8 @@ function ParticleNetwork() {
 
 /* ========== 均衡器 ========== */
 const EQ_BARS = Array.from({ length: 14 }, () => ({
-  h: 10 + Math.random() * 22,
-  d: 0.5 + Math.random() * 0.9,
+  h: 12 + Math.random() * 26,
+  d: 0.4 + Math.random() * 1,
 }))
 
 function Equalizer() {
@@ -185,7 +190,7 @@ function Equalizer() {
           key={i}
           className="eq-bar"
           style={{
-            animationDelay: `${i * 0.1}s`,
+            animationDelay: `${i * 0.08}s`,
             animationDuration: `${bar.d}s`,
             height: `${bar.h}px`,
           }}
@@ -198,6 +203,7 @@ function Equalizer() {
 /* ========== 主组件 ========== */
 function App() {
   const cardRef = useRef(null)
+  const orbRef = useRef(null)
   const [nameHovered, setNameHovered] = useState(false)
 
   const handleMouseMove = useCallback((e) => {
@@ -208,12 +214,21 @@ function App() {
     const y = e.clientY - rect.top
     const cx = rect.width / 2
     const cy = rect.height / 2
-    const rotX = ((y - cy) / cy) * -6
-    const rotY = ((x - cx) / cx) * 6
+    const rotX = ((y - cy) / cy) * -8
+    const rotY = ((x - cx) / cx) * 8
     card.style.transform = `perspective(800px) rotateX(${rotX}deg) rotateY(${rotY}deg)`
-    card.style.setProperty('--shadow-x', `${(x - cx) * 0.06}px`)
-    card.style.setProperty('--shadow-y', `${(y - cy) * 0.06}px`)
+    card.style.setProperty('--shadow-x', `${(x - cx) * 0.08}px`)
+    card.style.setProperty('--shadow-y', `${(y - cy) * 0.08}px`)
     card.style.setProperty('--ring-angle', `${Math.atan2(y - cy, x - cx) * (180 / Math.PI)}deg`)
+    card.style.setProperty('--glow-x', `${((x - cx) / cx) * 100}%`)
+    card.style.setProperty('--glow-y', `${((y - cy) / cy) * 100}%`)
+
+    // 光球视差
+    if (orbRef.current) {
+      const ox = (e.clientX / window.innerWidth - 0.5) * 60
+      const oy = (e.clientY / window.innerHeight - 0.5) * 60
+      orbRef.current.style.transform = `translate(calc(-50% + ${ox}px), calc(-50% + ${oy}px))`
+    }
   }, [])
 
   const handleMouseLeave = useCallback(() => {
@@ -222,12 +237,17 @@ function App() {
     card.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg)'
     card.style.setProperty('--shadow-x', '0px')
     card.style.setProperty('--shadow-y', '0px')
+    card.style.setProperty('--glow-x', '50%')
+    card.style.setProperty('--glow-y', '50%')
+    if (orbRef.current) {
+      orbRef.current.style.transform = 'translate(-50%, -50%)'
+    }
   }, [])
 
   return (
     <>
       <ParticleNetwork />
-      <div className="orb-third" />
+      <div className="orb-third" ref={orbRef} />
 
       <div
         className="card"
@@ -275,15 +295,13 @@ function App() {
         <p className="music-label"> 我的歌单 — 梁博</p>
         <div className="song-pills">
           {profile.songs.map((song) => (
-            <a
+            <button
               key={song.title}
-              href={song.url}
-              target="_blank"
-              rel="noopener noreferrer"
               className="song-pill"
+              onClick={() => window.open(song.url, '_blank', 'noopener')}
             >
               {song.title}
-            </a>
+            </button>
           ))}
         </div>
         <Equalizer />
