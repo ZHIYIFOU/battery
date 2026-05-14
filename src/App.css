@@ -1,80 +1,65 @@
-/* ========== 卡片 ========== */
+/* ========== 全屏卡片 ========== */
 .card {
-  background: rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(30px);
-  -webkit-backdrop-filter: blur(30px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 28px;
-  padding: 3rem 2.5rem;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+  width: 100vw;
+  height: 100vh;
+  padding: 4rem 5rem;
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: none;
+  text-align: left;
   position: relative;
   z-index: 1;
-  transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
-  will-change: transform;
-  animation: cardRise 0.8s ease-out;
+  animation: cardRise 1s ease-out;
   box-shadow:
-    0 0 80px rgba(108, 92, 231, 0.15),
-    0 0 160px rgba(108, 92, 231, 0.06),
-    var(--shadow-x, 0px) var(--shadow-y, 0px) 50px rgba(0, 0, 0, 0.5);
-}
-
-.card::after {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  border-radius: 28px;
-  background: radial-gradient(
-    circle 200px at var(--glow-x, 50%) var(--glow-y, 50%),
-    rgba(108, 92, 231, 0.1),
-    transparent 60%
-  );
-  pointer-events: none;
-  z-index: -1;
-  transition: opacity 0.3s;
-}
-
-.card::before {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  border-radius: 28px;
-  padding: 1px;
-  background: linear-gradient(
-    160deg,
-    rgba(255, 255, 255, 0.2),
-    rgba(108, 92, 231, 0.3) 30%,
-    rgba(0, 206, 201, 0.2) 60%,
-    rgba(255, 255, 255, 0.1) 100%
-  );
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
-  animation: breathe 4s ease-in-out infinite;
+    inset 0 0 200px rgba(108, 92, 231, 0.03),
+    var(--shadow-x, 0px) var(--shadow-y, 0px) 60px rgba(0, 0, 0, 0.4);
 }
 
 @keyframes cardRise {
-  from { opacity: 0; transform: translateY(30px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
-@keyframes breathe {
-  0%, 100% { opacity: 0.5; }
-  50% { opacity: 1; }
+/* ========== 左侧头像区 ========== */
+.card-left {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 260px;
+  animation: fadeUp 0.8s 0.2s ease-out both;
+}
+
+/* ========== 右侧信息区 ========== */
+.card-right {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  animation: fadeUp 0.8s 0.4s ease-out both;
+  max-width: 600px;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* ========== 头像 + 光环 ========== */
 .card-avatar {
   position: relative;
-  width: 110px;
-  height: 110px;
-  margin: 0 auto 1.75rem;
+  width: 180px;
+  height: 180px;
+  margin-bottom: 1.5rem;
 }
 
 .avatar-ring {
   position: absolute;
-  inset: -6px;
+  inset: -8px;
   border-radius: 50%;
   background: conic-gradient(
     from var(--ring-angle, 0deg),
@@ -82,11 +67,12 @@
     #a29bfe,
     #00cec9,
     #fdcb6e,
+    #fd79a8,
     #6c5ce7
   );
-  animation: ringSpin 5s linear infinite;
-  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
-  mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
+  animation: ringSpin 6s linear infinite;
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 4px), #000 calc(100% - 4px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 4px), #000 calc(100% - 4px));
   transition: background 0.3s;
 }
 
@@ -95,166 +81,145 @@
 }
 
 .card-avatar img {
-  width: 110px;
-  height: 110px;
+  width: 180px;
+  height: 180px;
   border-radius: 50%;
   object-fit: cover;
-  border: 3px solid rgba(255, 255, 255, 0.2);
+  border: 4px solid rgba(255, 255, 255, 0.15);
   position: relative;
   z-index: 1;
   display: block;
-  animation: avatarIn 0.6s 0.15s ease-out both;
+  animation: avatarIn 0.8s 0.3s ease-out both;
 }
 
 .avatar-placeholder {
-  width: 110px;
-  height: 110px;
+  width: 180px;
+  height: 180px;
   border-radius: 50%;
   background: linear-gradient(135deg, #6c5ce7, #a29bfe);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2.75rem;
-  font-weight: 600;
+  font-size: 4rem;
+  font-weight: 700;
   color: #fff;
-  border: 3px solid rgba(255, 255, 255, 0.2);
+  border: 4px solid rgba(255, 255, 255, 0.15);
   position: relative;
   z-index: 1;
 }
 
 @keyframes avatarIn {
-  from { opacity: 0; transform: scale(0.8); }
+  from { opacity: 0; transform: scale(0.7); }
   to { opacity: 1; transform: scale(1); }
 }
 
-/* ========== 文字 ========== */
+/* ========== 左区文字 ========== */
 .card-name {
-  font-size: 1.8rem;
+  font-size: 2.2rem;
   font-weight: 700;
   color: #fff;
   margin-bottom: 0.3rem;
-  letter-spacing: 2px;
-  animation: fadeUp 0.5s 0.25s ease-out both;
+  letter-spacing: 3px;
   transition: text-shadow 0.4s;
 }
 
 .card-name:hover {
-  text-shadow: 0 0 30px rgba(168, 143, 255, 0.5), 0 0 60px rgba(108, 92, 231, 0.3);
+  text-shadow: 0 0 40px rgba(168, 143, 255, 0.6), 0 0 80px rgba(108, 92, 231, 0.3);
 }
 
 .card-underline {
-  width: 50px;
-  height: 3px;
+  width: 60px;
+  height: 4px;
   border-radius: 2px;
   background: linear-gradient(90deg, #6c5ce7, #fdcb6e, #00cec9);
-  margin: 0 auto 0.6rem;
-  animation: widen 0.5s 0.35s ease-out both;
-}
-
-@keyframes widen {
-  from { width: 0; opacity: 0; }
-  to { width: 50px; opacity: 1; }
+  margin-bottom: 0.6rem;
 }
 
 .card-title {
-  font-size: 0.95rem;
+  font-size: 1.1rem;
   color: #a29bfe;
-  margin-bottom: 0.75rem;
   font-weight: 500;
-  animation: fadeUp 0.5s 0.4s ease-out both;
+  letter-spacing: 2px;
 }
 
+/* ========== 右区内容 ========== */
 .card-bio {
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: #b0b0c8;
-  line-height: 1.8;
+  line-height: 1.9;
   margin-bottom: 1.75rem;
-  max-width: 380px;
-  margin-left: auto;
-  margin-right: auto;
-  animation: fadeUp 0.5s 0.5s ease-out both;
-}
-
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(12px); }
-  to { opacity: 1; transform: translateY(0); }
 }
 
 /* ========== 技能标签 ========== */
 .card-skills {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.55rem;
-  justify-content: center;
+  gap: 0.6rem;
   margin-bottom: 1.75rem;
 }
 
 .tag {
-  font-size: 0.82rem;
-  padding: 0.4rem 0.9rem;
+  font-size: 0.85rem;
+  padding: 0.45rem 1rem;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.06);
   color: #c8c8e0;
   border: 1px solid rgba(255, 255, 255, 0.1);
   display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
+  gap: 0.4rem;
   transition: background 0.3s, border-color 0.3s, transform 0.2s, box-shadow 0.3s;
   animation: tagPop 0.4s ease-out both, tagGlow 3s ease-in-out 0.8s infinite;
 }
 
 .tag:hover {
-  background: rgba(108, 92, 231, 0.15);
-  border-color: rgba(108, 92, 231, 0.3);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 16px rgba(108, 92, 231, 0.2);
+  background: rgba(108, 92, 231, 0.18);
+  border-color: rgba(108, 92, 231, 0.4);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(108, 92, 231, 0.25);
 }
 
 .tag-icon {
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   line-height: 1;
 }
 
 @keyframes tagPop {
-  from { opacity: 0; transform: scale(0.6); }
+  from { opacity: 0; transform: scale(0.5); }
   to { opacity: 1; transform: scale(1); }
 }
 
 @keyframes tagGlow {
   0%, 100% { box-shadow: 0 0 0 rgba(108, 92, 231, 0); }
-  50% { box-shadow: 0 0 10px rgba(108, 92, 231, 0.12); }
+  50% { box-shadow: 0 0 14px rgba(108, 92, 231, 0.12); }
 }
 
 /* ========== 分割线 ========== */
 .card-divider {
-  width: 50%;
+  width: 80%;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.12), transparent);
-  margin: 0 auto 1.25rem;
-  animation: fadeUp 0.5s 0.6s ease-out both;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.1), transparent);
+  margin-bottom: 1.25rem;
 }
 
 /* ========== 歌单 ========== */
 .music-label {
-  font-size: 0.82rem;
-  color: #888;
+  font-size: 0.85rem;
+  color: #777;
   margin-bottom: 0.75rem;
   letter-spacing: 1px;
-  animation: fadeUp 0.5s 0.65s ease-out both;
 }
 
 .song-pills {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
-  justify-content: center;
+  gap: 0.55rem;
   margin-bottom: 1rem;
-  animation: fadeUp 0.5s 0.7s ease-out both;
 }
 
 .song-pill {
-  font-size: 0.78rem;
-  padding: 0.35rem 0.85rem;
+  font-size: 0.8rem;
+  padding: 0.4rem 0.95rem;
   border-radius: 999px;
   background: rgba(253, 203, 110, 0.08);
   color: #fdcb6e;
@@ -265,33 +230,31 @@
 }
 
 .song-pill:hover {
-  background: rgba(253, 203, 110, 0.18);
-  border-color: rgba(253, 203, 110, 0.4);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 16px rgba(253, 203, 110, 0.15);
+  background: rgba(253, 203, 110, 0.2);
+  border-color: rgba(253, 203, 110, 0.5);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(253, 203, 110, 0.2);
 }
 
 /* ========== 均衡器 ========== */
 .equalizer {
   display: flex;
   align-items: flex-end;
-  justify-content: center;
-  gap: 4px;
-  height: 36px;
-  margin-bottom: 0.25rem;
-  animation: fadeUp 0.5s 0.75s ease-out both;
+  gap: 5px;
+  height: 42px;
+  margin-bottom: 0.5rem;
 }
 
 .eq-bar {
   width: 5px;
-  min-height: 6px;
+  min-height: 8px;
   border-radius: 3px;
   background: linear-gradient(to top, #6c5ce7, #00cec9, #fdcb6e);
-  animation: eqJump 0.7s ease-in-out infinite alternate;
+  animation: eqJump 0.6s ease-in-out infinite alternate;
 }
 
 @keyframes eqJump {
-  0% { height: 6px; opacity: 0.4; }
+  0% { height: 6px; opacity: 0.3; }
   100% { opacity: 1; }
 }
 
@@ -299,13 +262,11 @@
 .card-social {
   display: flex;
   gap: 1rem;
-  justify-content: center;
-  animation: fadeUp 0.5s 0.8s ease-out both;
 }
 
 .social-link {
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -317,40 +278,59 @@
 }
 
 .social-link svg {
-  width: 21px;
-  height: 21px;
+  width: 22px;
+  height: 22px;
 }
 
 .social-link:hover {
-  background: rgba(108, 92, 231, 0.25);
+  background: rgba(108, 92, 231, 0.3);
   color: #fff;
-  transform: translateY(-3px);
-  box-shadow: 0 6px 24px rgba(108, 92, 231, 0.3);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 28px rgba(108, 92, 231, 0.35);
 }
 
 /* ========== 响应式 ========== */
-@media (max-width: 480px) {
+@media (max-width: 768px) {
   .card {
-    padding: 2.25rem 1.5rem;
-    border-radius: 22px;
+    flex-direction: column;
+    padding: 3rem 1.5rem;
+    gap: 2rem;
+    justify-content: center;
   }
 
-  .card::before {
-    border-radius: 22px;
+  .card-left {
+    min-width: auto;
   }
 
-  .card-name {
-    font-size: 1.45rem;
-  }
-
-  .card-bio {
-    font-size: 0.82rem;
+  .card-right {
+    align-items: center;
+    text-align: center;
+    max-width: 100%;
   }
 
   .card-avatar,
   .card-avatar img,
   .avatar-placeholder {
-    width: 90px;
-    height: 90px;
+    width: 130px;
+    height: 130px;
+  }
+
+  .card-name {
+    font-size: 1.6rem;
+  }
+
+  .card-bio {
+    font-size: 0.9rem;
+  }
+
+  .card-divider {
+    width: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  }
+
+  .card-skills,
+  .song-pills,
+  .card-social {
+    justify-content: center;
   }
 }

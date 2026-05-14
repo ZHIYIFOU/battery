@@ -16,13 +16,10 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
     "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial,
     sans-serif;
-  background: #08081a;
+  background: #06061a;
   color: #e0e0e0;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1.5rem;
+  width: 100vw;
+  height: 100vh;
   overflow: hidden;
   position: relative;
 }
@@ -33,61 +30,79 @@ body::after {
   content: '';
   position: fixed;
   border-radius: 50%;
-  filter: blur(100px);
-  opacity: 0.45;
+  filter: blur(120px);
+  opacity: 0.4;
   pointer-events: none;
   z-index: 0;
 }
 
 body::before {
-  width: 550px;
-  height: 550px;
+  width: 600px;
+  height: 600px;
   background: radial-gradient(circle, #6c5ce7 0%, transparent 70%);
-  top: -180px;
-  left: -120px;
-  animation: floatOrb1 14s ease-in-out infinite;
+  top: -200px;
+  left: -150px;
+  animation: floatOrb1 16s ease-in-out infinite;
 }
 
 body::after {
-  width: 450px;
-  height: 450px;
+  width: 500px;
+  height: 500px;
   background: radial-gradient(circle, #00cec9 0%, transparent 70%);
-  bottom: -150px;
-  right: -100px;
-  animation: floatOrb2 16s ease-in-out infinite;
+  bottom: -180px;
+  right: -120px;
+  animation: floatOrb2 18s ease-in-out infinite;
 }
 
 @keyframes floatOrb1 {
   0%, 100% { transform: translate(0, 0) scale(1); }
-  33% { transform: translate(80px, 60px) scale(1.2); }
-  66% { transform: translate(-40px, -30px) scale(0.85); }
+  33% { transform: translate(100px, 70px) scale(1.2); }
+  66% { transform: translate(-50px, -40px) scale(0.8); }
 }
 
 @keyframes floatOrb2 {
   0%, 100% { transform: translate(0, 0) scale(1); }
-  33% { transform: translate(-60px, -40px) scale(1.25); }
-  66% { transform: translate(50px, 30px) scale(0.8); }
+  33% { transform: translate(-70px, -50px) scale(1.3); }
+  66% { transform: translate(60px, 40px) scale(0.75); }
 }
 
+/* ---- 光球 ---- */
 .orb-third {
   position: fixed;
-  width: 400px;
-  height: 400px;
+  width: 500px;
+  height: 500px;
   border-radius: 50%;
   background: radial-gradient(circle, #fdcb6e 0%, transparent 70%);
-  filter: blur(90px);
+  filter: blur(100px);
   opacity: 0.2;
   pointer-events: none;
   z-index: 0;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  animation: floatOrb3 18s ease-in-out infinite;
+  transition: transform 0.3s ease-out;
 }
 
-@keyframes floatOrb3 {
-  0%, 100% { transform: translate(-50%, -50%) scale(1); }
-  50% { transform: translate(-40%, -70%) scale(1.3); }
+/* ---- 背景水印 ---- */
+.bg-watermark {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: clamp(4rem, 12vw, 9rem);
+  font-weight: 900;
+  letter-spacing: 0.3em;
+  color: rgba(255, 255, 255, 0.015);
+  pointer-events: none;
+  z-index: 0;
+  white-space: nowrap;
+  animation: watermarkPulse 8s ease-in-out infinite;
+  user-select: none;
+}
+
+@keyframes watermarkPulse {
+  0%, 100% { color: rgba(255, 255, 255, 0.015); }
+  50% { color: rgba(255, 255, 255, 0.03); }
 }
 
 /* ---- 粒子画布 ---- */
@@ -99,9 +114,8 @@ body::after {
 }
 
 #root {
-  width: 100%;
-  max-width: 500px;
+  width: 100vw;
+  height: 100vh;
   position: relative;
   z-index: 1;
-  perspective: 800px;
 }
