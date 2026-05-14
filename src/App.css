@@ -255,7 +255,7 @@
   align-items: center;
   gap: 0.35rem;
   transition: background 0.25s, border-color 0.25s, transform 0.15s;
-  animation: tagPop 0.4s ease-out both;
+  animation: tagPop 0.4s ease-out both, tagGlow 2.5s ease-in-out 0.8s infinite;
 }
 
 .tag:hover {
@@ -327,9 +327,151 @@
   box-shadow: 0 4px 20px rgba(108, 92, 231, 0.3);
 }
 
+/* ========== 卡片悬浮动画 ========== */
+.card-float {
+  animation: cardRise 0.8s ease-out, cardFloat 4s ease-in-out 0.8s infinite;
+}
+
+@keyframes cardFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes tagGlow {
+  0%, 100% { box-shadow: 0 0 0 rgba(108, 92, 231, 0); }
+  50% { box-shadow: 0 0 12px rgba(108, 92, 231, 0.15); }
+}
+
 /* ========== 磁吸效果 ========== */
 .magnetic {
   transition: transform 0.15s ease-out;
+}
+
+/* ========== 音乐板块 ========== */
+.music-section {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  padding: 1.75rem 1.5rem;
+  animation: fadeUp 0.6s 0.5s ease-out both;
+  position: relative;
+  z-index: 1;
+}
+
+.music-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.song-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.song-card {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.7rem 0.9rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  text-decoration: none;
+  color: inherit;
+  transition: background 0.25s, border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+  cursor: none;
+}
+
+.song-card:hover {
+  background: rgba(108, 92, 231, 0.12);
+  border-color: rgba(108, 92, 231, 0.3);
+  transform: translateX(4px);
+  box-shadow: 0 4px 16px rgba(108, 92, 231, 0.15);
+}
+
+.song-play {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(108, 92, 231, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  color: #a29bfe;
+  flex-shrink: 0;
+  transition: background 0.25s, transform 0.25s;
+}
+
+.song-card:hover .song-play {
+  background: #6c5ce7;
+  color: #fff;
+  transform: scale(1.1);
+}
+
+.song-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.song-name {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #e0e0e0;
+  transition: color 0.25s;
+}
+
+.song-card:hover .song-name {
+  color: #fff;
+}
+
+.song-album {
+  display: block;
+  font-size: 0.75rem;
+  color: #888;
+  margin-top: 0.15rem;
+}
+
+.song-arrow {
+  font-size: 0.85rem;
+  color: #555;
+  transition: color 0.25s, transform 0.25s;
+}
+
+.song-card:hover .song-arrow {
+  color: #a29bfe;
+  transform: translateX(3px);
+}
+
+/* ========== 均衡器 ========== */
+.equalizer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 3px;
+  margin-top: 1.25rem;
+  height: 40px;
+}
+
+.eq-bar {
+  width: 4px;
+  border-radius: 2px;
+  background: linear-gradient(to top, #6c5ce7, #00cec9);
+  animation: eqJump 0.8s ease-in-out infinite alternate;
+}
+
+@keyframes eqJump {
+  0% { height: 8px; opacity: 0.5; }
+  100% { opacity: 1; }
 }
 
 /* ========== 响应式 ========== */

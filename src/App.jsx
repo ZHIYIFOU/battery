@@ -45,6 +45,54 @@ const profile = {
   ],
 }
 
+/* 梁博歌曲列表 */
+const songs = [
+  {
+    title: '出现又离开',
+    album: '梁博 2019',
+    url: 'https://music.163.com/#/song?id=1407359250',
+  },
+  {
+    title: '日落大道',
+    album: '梁博 2015',
+    url: 'https://music.163.com/#/song?id=432506856',
+  },
+  {
+    title: '男孩',
+    album: '梁博 2017',
+    url: 'https://music.163.com/#/song?id=432506834',
+  },
+  {
+    title: '表态',
+    album: '梁博 2019',
+    url: 'https://music.163.com/#/song?id=1407359248',
+  },
+  {
+    title: '私奔',
+    album: '梁博 2017',
+    url: 'https://music.163.com/#/song?id=432506841',
+  },
+]
+
+/* ========== 均衡器 ========== */
+function Equalizer() {
+  return (
+    <div className="equalizer">
+      {Array.from({ length: 16 }).map((_, i) => (
+        <div
+          key={i}
+          className="eq-bar"
+          style={{
+            animationDelay: `${i * 0.12}s`,
+            animationDuration: `${0.6 + Math.random() * 0.8}s`,
+            height: `${12 + Math.random() * 20}px`,
+          }}
+        />
+      ))}
+    </div>
+  )
+}
+
 /* ========== 粒子网络背景 ========== */
 function ParticleNetwork() {
   const canvasRef = useRef(null)
@@ -249,7 +297,7 @@ function App() {
       <Cursor />
 
       <div
-        className="card"
+        className="card card-float"
         ref={cardRef}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
@@ -310,6 +358,30 @@ function App() {
             </a>
           ))}
         </div>
+      </div>
+
+      {/* 音乐板块 */}
+      <div className="music-section">
+        <h2 className="music-title"> 我的歌单 — 梁博</h2>
+        <div className="song-list">
+          {songs.map((song) => (
+            <a
+              key={song.title}
+              href={song.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="song-card"
+            >
+              <span className="song-play">▶</span>
+              <div className="song-info">
+                <span className="song-name">{song.title}</span>
+                <span className="song-album">{song.album}</span>
+              </div>
+              <span className="song-arrow">→</span>
+            </a>
+          ))}
+        </div>
+        <Equalizer />
       </div>
     </>
   )
