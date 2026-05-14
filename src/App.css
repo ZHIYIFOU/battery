@@ -1,0 +1,301 @@
+/* ========== 卡片主体 ========== */
+.card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 24px;
+  padding: 2.5rem 2rem;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
+  will-change: transform;
+  animation: cardRise 0.8s ease-out;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 24px;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.2),
+    rgba(255, 255, 255, 0.05) 40%,
+    rgba(255, 255, 255, 0) 60%,
+    rgba(255, 255, 255, 0.15)
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  animation: breathe 3s ease-in-out infinite;
+}
+
+@keyframes cardRise {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes breathe {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+/* ========== 头像 + 光环 ========== */
+.card-avatar {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  margin: 0 auto 1.5rem;
+}
+
+.avatar-ring {
+  position: absolute;
+  inset: -5px;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    #6c5ce7,
+    #a29bfe,
+    #00cec9,
+    #fd79a8,
+    #6c5ce7
+  );
+  animation: ringSpin 3s linear infinite;
+  -webkit-mask: radial-gradient(
+    farthest-side,
+    transparent calc(100% - 3px),
+    #000 calc(100% - 3px)
+  );
+  mask: radial-gradient(
+    farthest-side,
+    transparent calc(100% - 3px),
+    #000 calc(100% - 3px)
+  );
+}
+
+@keyframes ringSpin {
+  to { transform: rotate(360deg); }
+}
+
+.card-avatar img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid rgba(255, 255, 255, 0.15);
+  position: relative;
+  z-index: 1;
+  display: block;
+  animation: avatarIn 0.6s 0.15s ease-out both;
+}
+
+.avatar-placeholder {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: #fff;
+  border: 3px solid rgba(255, 255, 255, 0.15);
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes avatarIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ========== 文字 ========== */
+.card-name {
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 0.4rem;
+  letter-spacing: 1px;
+  animation: fadeUp 0.5s 0.25s ease-out both;
+}
+
+.card-underline {
+  width: 40px;
+  height: 3px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #6c5ce7, #00cec9);
+  margin: 0 auto 0.5rem;
+  animation: widen 0.5s 0.35s ease-out both;
+}
+
+@keyframes widen {
+  from { width: 0; opacity: 0; }
+  to { width: 40px; opacity: 1; }
+}
+
+.card-title {
+  font-size: 0.95rem;
+  color: #a29bfe;
+  margin-bottom: 0.75rem;
+  font-weight: 500;
+  animation: fadeUp 0.5s 0.4s ease-out both;
+}
+
+.card-bio {
+  font-size: 0.9rem;
+  color: #b0b0c8;
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+  max-width: 340px;
+  margin-left: auto;
+  margin-right: auto;
+  animation: fadeUp 0.5s 0.5s ease-out both;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ========== 技能标签 ========== */
+.card-skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.tag {
+  font-size: 0.8rem;
+  padding: 0.35rem 0.8rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.07);
+  color: #c8c8e0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: background 0.25s, border-color 0.25s, transform 0.25s;
+  animation: tagPop 0.4s ease-out both;
+}
+
+.tag:hover {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+}
+
+.tag-icon {
+  font-size: 0.75rem;
+  line-height: 1;
+}
+
+@keyframes tagPop {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ========== 分割线 ========== */
+.card-divider {
+  width: 60%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.15),
+    transparent
+  );
+  margin: 0 auto 1.5rem;
+  animation: fadeUp 0.5s 0.6s ease-out both;
+}
+
+/* ========== 社交链接 ========== */
+.card-social {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  animation: fadeUp 0.5s 0.7s ease-out both;
+}
+
+.social-link {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #c8c8e0;
+  transition: background 0.25s, color 0.25s, transform 0.25s, box-shadow 0.25s;
+}
+
+.social-link svg {
+  width: 20px;
+  height: 20px;
+}
+
+.social-link:hover {
+  background: rgba(108, 92, 231, 0.3);
+  color: #fff;
+  transform: translateY(-3px) scale(1.1);
+  box-shadow: 0 4px 20px rgba(108, 92, 231, 0.3);
+}
+
+/* ========== 响应式 ========== */
+@media (max-width: 480px) {
+  .card {
+    padding: 2rem 1.25rem;
+    border-radius: 18px;
+  }
+
+  .card::before {
+    border-radius: 18px;
+  }
+
+  .card-name {
+    font-size: 1.4rem;
+  }
+
+  .card-bio {
+    font-size: 0.85rem;
+  }
+
+  .card-avatar,
+  .card-avatar img,
+  .avatar-placeholder {
+    width: 80px;
+    height: 80px;
+  }
+}
