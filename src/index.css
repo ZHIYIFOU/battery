@@ -10,6 +10,7 @@ html {
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  cursor: none;
 }
 
 body {
@@ -25,6 +26,7 @@ body {
   padding: 1.5rem;
   overflow: hidden;
   position: relative;
+  cursor: none;
 }
 
 /* ---- 浮动光晕 ---- */
@@ -69,7 +71,6 @@ body::after {
   66% { transform: translate(40px, 20px) scale(0.85); }
 }
 
-/* 第三个光球 */
 .orb-third {
   position: fixed;
   width: 350px;
@@ -91,13 +92,63 @@ body::after {
   50% { transform: translate(-40%, -60%) scale(1.25); }
 }
 
-/* ---- 点阵纹理 ---- */
-.canvas-dots {
+/* ---- 粒子画布 ---- */
+.canvas-particles {
   position: fixed;
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  opacity: 0.3;
+}
+
+/* ---- 自定义光标 ---- */
+.custom-cursor {
+  position: fixed;
+  top: -12px;
+  left: -12px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid rgba(108, 92, 231, 0.6);
+  pointer-events: none;
+  z-index: 9999;
+  transition: width 0.15s, height 0.15s, top 0.15s, left 0.15s, border-color 0.15s;
+  will-change: transform;
+}
+
+.custom-cursor::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 1px solid rgba(108, 92, 231, 0.15);
+  animation: cursorPulse 2s ease-out infinite;
+}
+
+@keyframes cursorPulse {
+  0%, 100% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.4); opacity: 0; }
+}
+
+.cursor-dot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #fff;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 8px rgba(108, 92, 231, 0.8);
+}
+
+.cursor-click {
+  animation: cursorBurst 0.4s ease-out;
+}
+
+@keyframes cursorBurst {
+  0% { transform: scale(1); border-color: rgba(108, 92, 231, 0.9); }
+  50% { transform: scale(1.8); border-color: rgba(108, 92, 231, 0.2); }
+  100% { transform: scale(1); border-color: rgba(108, 92, 231, 0.6); }
 }
 
 #root {
