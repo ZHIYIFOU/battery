@@ -43,54 +43,28 @@ const profile = {
       ),
     },
   ],
-}
-
-/* 梁博歌曲列表 */
-const songs = [
-  {
-    title: '出现又离开',
-    album: '梁博 2019',
-    url: 'https://music.163.com/#/song?id=1407359250',
-  },
-  {
-    title: '日落大道',
-    album: '梁博 2015',
-    url: 'https://music.163.com/#/song?id=432506856',
-  },
-  {
-    title: '男孩',
-    album: '梁博 2017',
-    url: 'https://music.163.com/#/song?id=432506834',
-  },
-  {
-    title: '表态',
-    album: '梁博 2019',
-    url: 'https://music.163.com/#/song?id=1407359248',
-  },
-  {
-    title: '私奔',
-    album: '梁博 2017',
-    url: 'https://music.163.com/#/song?id=432506841',
-  },
-]
-
-/* ========== 均衡器 ========== */
-function Equalizer() {
-  return (
-    <div className="equalizer">
-      {Array.from({ length: 16 }).map((_, i) => (
-        <div
-          key={i}
-          className="eq-bar"
-          style={{
-            animationDelay: `${i * 0.12}s`,
-            animationDuration: `${0.6 + Math.random() * 0.8}s`,
-            height: `${12 + Math.random() * 20}px`,
-          }}
-        />
-      ))}
-    </div>
-  )
+  songs: [
+    {
+      title: '出现又离开',
+      url: 'https://music.163.com/#/song?id=1407359250',
+    },
+    {
+      title: '日落大道',
+      url: 'https://music.163.com/#/song?id=432506856',
+    },
+    {
+      title: '男孩',
+      url: 'https://music.163.com/#/song?id=432506834',
+    },
+    {
+      title: '表态',
+      url: 'https://music.163.com/#/song?id=1407359248',
+    },
+    {
+      title: '私奔',
+      url: 'https://music.163.com/#/song?id=432506841',
+    },
+  ],
 }
 
 /* ========== 粒子网络背景 ========== */
@@ -103,9 +77,9 @@ function ParticleNetwork() {
     if (!canvas) return
     const ctx = canvas.getContext('2d')
     const particles = []
-    const PARTICLE_COUNT = 60
-    const CONNECT_DIST = 120
-    const MOUSE_RADIUS = 100
+    const COUNT = 80
+    const CONNECT = 130
+    const MOUSE_R = 120
 
     const resize = () => {
       canvas.width = window.innerWidth
@@ -114,20 +88,18 @@ function ParticleNetwork() {
     resize()
     window.addEventListener('resize', resize)
 
-    for (let i = 0; i < PARTICLE_COUNT; i++) {
+    for (let i = 0; i < COUNT; i++) {
       particles.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.5,
-        vy: (Math.random() - 0.5) * 0.5,
-        r: Math.random() * 1.5 + 0.5,
+        vx: (Math.random() - 0.5) * 0.6,
+        vy: (Math.random() - 0.5) * 0.6,
+        r: Math.random() * 1.8 + 0.5,
       })
     }
 
     const onMouseMove = (e) => {
       mouseRef.current = { x: e.clientX, y: e.clientY }
-      document.documentElement.style.setProperty('--mouse-x', `${e.clientX}px`)
-      document.documentElement.style.setProperty('--mouse-y', `${e.clientY}px`)
     }
     window.addEventListener('mousemove', onMouseMove)
 
@@ -141,35 +113,32 @@ function ParticleNetwork() {
         const dx = p.x - mx
         const dy = p.y - my
         const dist = Math.sqrt(dx * dx + dy * dy)
-        if (dist < MOUSE_RADIUS && dist > 0) {
-          const force = (MOUSE_RADIUS - dist) / MOUSE_RADIUS
-          p.vx += (dx / dist) * force * 0.5
-          p.vy += (dy / dist) * force * 0.5
+        if (dist < MOUSE_R && dist > 0) {
+          const force = (MOUSE_R - dist) / MOUSE_R
+          p.vx += (dx / dist) * force * 0.4
+          p.vy += (dy / dist) * force * 0.4
         }
-
         p.x += p.vx
         p.y += p.vy
-        p.vx *= 0.98
-        p.vy *= 0.98
-
+        p.vx *= 0.985
+        p.vy *= 0.985
         if (p.x < 0) p.x = canvas.width
         if (p.x > canvas.width) p.x = 0
         if (p.y < 0) p.y = canvas.height
         if (p.y > canvas.height) p.y = 0
       })
 
-      // 连线
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
           const dx = particles[i].x - particles[j].x
           const dy = particles[i].y - particles[j].y
           const dist = Math.sqrt(dx * dx + dy * dy)
-          if (dist < CONNECT_DIST) {
-            const midX = (particles[i].x + particles[j].x) / 2
-            const midY = (particles[i].y + particles[j].y) / 2
-            const toMouse = Math.sqrt((midX - mx) ** 2 + (midY - my) ** 2)
-            const brightness = toMouse < 200 ? 0.08 + (1 - toMouse / 200) * 0.5 : 0.08
-            ctx.strokeStyle = `rgba(108, 92, 231, ${brightness})`
+          if (dist < CONNECT) {
+            const mx2 = (particles[i].x + particles[j].x) / 2
+            const my2 = (particles[i].y + particles[j].y) / 2
+            const toMouse = Math.sqrt((mx2 - mx) ** 2 + (my2 - my) ** 2)
+            const alpha = toMouse < 200 ? 0.06 + (1 - toMouse / 200) * 0.55 : 0.06
+            ctx.strokeStyle = `rgba(108, 92, 231, ${alpha})`
             ctx.lineWidth = 0.5
             ctx.beginPath()
             ctx.moveTo(particles[i].x, particles[i].y)
@@ -179,11 +148,10 @@ function ParticleNetwork() {
         }
       }
 
-      // 粒子
       particles.forEach((p) => {
         const toMouse = Math.sqrt((p.x - mx) ** 2 + (p.y - my) ** 2)
-        const brightness = toMouse < 150 ? 0.6 + (1 - toMouse / 150) * 0.4 : 0.2
-        ctx.fillStyle = `rgba(255, 255, 255, ${brightness})`
+        const alpha = toMouse < 150 ? 0.5 + (1 - toMouse / 150) * 0.5 : 0.2
+        ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`
         ctx.beginPath()
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2)
         ctx.fill()
@@ -203,34 +171,26 @@ function ParticleNetwork() {
   return <canvas ref={canvasRef} className="canvas-particles" />
 }
 
-/* ========== 自定义光标 ========== */
-function Cursor() {
-  const cursorRef = useRef(null)
+/* ========== 均衡器 ========== */
+const EQ_BARS = Array.from({ length: 14 }, () => ({
+  h: 10 + Math.random() * 22,
+  d: 0.5 + Math.random() * 0.9,
+}))
 
-  useEffect(() => {
-    const onMove = (e) => {
-      if (cursorRef.current) {
-        cursorRef.current.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`
-      }
-    }
-    const onClick = () => {
-      const el = cursorRef.current
-      if (!el) return
-      el.classList.remove('cursor-click')
-      void el.offsetWidth
-      el.classList.add('cursor-click')
-    }
-    window.addEventListener('mousemove', onMove)
-    window.addEventListener('click', onClick)
-    return () => {
-      window.removeEventListener('mousemove', onMove)
-      window.removeEventListener('click', onClick)
-    }
-  }, [])
-
+function Equalizer() {
   return (
-    <div ref={cursorRef} className="custom-cursor">
-      <span className="cursor-dot" />
+    <div className="equalizer">
+      {EQ_BARS.map((bar, i) => (
+        <div
+          key={i}
+          className="eq-bar"
+          style={{
+            animationDelay: `${i * 0.1}s`,
+            animationDuration: `${bar.d}s`,
+            height: `${bar.h}px`,
+          }}
+        />
+      ))}
     </div>
   )
 }
@@ -248,15 +208,12 @@ function App() {
     const y = e.clientY - rect.top
     const cx = rect.width / 2
     const cy = rect.height / 2
-    const rotX = ((y - cy) / cy) * -8
-    const rotY = ((x - cx) / cx) * 8
+    const rotX = ((y - cy) / cy) * -6
+    const rotY = ((x - cx) / cx) * 6
     card.style.transform = `perspective(800px) rotateX(${rotX}deg) rotateY(${rotY}deg)`
     card.style.setProperty('--shadow-x', `${(x - cx) * 0.06}px`)
     card.style.setProperty('--shadow-y', `${(y - cy) * 0.06}px`)
-
-    const rx = ((x - cx) / cx) * 15
-    const ry = ((y - cy) / cy) * 15
-    card.style.setProperty('--ring-angle', `${Math.atan2(ry, rx) * (180 / Math.PI)}deg`)
+    card.style.setProperty('--ring-angle', `${Math.atan2(y - cy, x - cx) * (180 / Math.PI)}deg`)
   }, [])
 
   const handleMouseLeave = useCallback(() => {
@@ -267,37 +224,13 @@ function App() {
     card.style.setProperty('--shadow-y', '0px')
   }, [])
 
-  // 磁吸效果
-  useEffect(() => {
-    const onMove = (e) => {
-      document.querySelectorAll('.magnetic').forEach((el) => {
-        const rect = el.getBoundingClientRect()
-        const cx = rect.left + rect.width / 2
-        const cy = rect.top + rect.height / 2
-        const dx = e.clientX - cx
-        const dy = e.clientY - cy
-        const dist = Math.sqrt(dx * dx + dy * dy)
-        const range = 60
-        if (dist < range) {
-          const pull = (1 - dist / range) * 8
-          el.style.transform = `translate(${dx * pull * 0.06}px, ${dy * pull * 0.06}px)`
-        } else {
-          el.style.transform = 'translate(0, 0)'
-        }
-      })
-    }
-    window.addEventListener('mousemove', onMove)
-    return () => window.removeEventListener('mousemove', onMove)
-  }, [])
-
   return (
     <>
       <ParticleNetwork />
       <div className="orb-third" />
-      <Cursor />
 
       <div
-        className="card card-float"
+        className="card"
         ref={cardRef}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
@@ -321,7 +254,6 @@ function App() {
           onMouseLeave={() => setNameHovered(false)}
         >
           {profile.name}
-          {nameHovered && <span className="name-particles" />}
         </h1>
         <div className="card-underline" />
         <p className="card-title">{profile.title}</p>
@@ -330,16 +262,31 @@ function App() {
         {/* 技能标签 */}
         <div className="card-skills">
           {profile.skills.map((skill, i) => (
-            <span
-              key={skill.name}
-              className="tag magnetic"
-              style={{ animationDelay: `${0.05 * i}s` }}
-            >
+            <span key={skill.name} className="tag" style={{ animationDelay: `${0.05 * i}s` }}>
               <span className="tag-icon">{skill.icon}</span>
               {skill.name}
             </span>
           ))}
         </div>
+
+        <div className="card-divider" />
+
+        {/* 歌单 */}
+        <p className="music-label"> 我的歌单 — 梁博</p>
+        <div className="song-pills">
+          {profile.songs.map((song) => (
+            <a
+              key={song.title}
+              href={song.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="song-pill"
+            >
+              {song.title}
+            </a>
+          ))}
+        </div>
+        <Equalizer />
 
         <div className="card-divider" />
 
@@ -351,37 +298,13 @@ function App() {
               href={s.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="social-link magnetic"
+              className="social-link"
               title={s.label}
             >
               {s.icon}
             </a>
           ))}
         </div>
-      </div>
-
-      {/* 音乐板块 */}
-      <div className="music-section">
-        <h2 className="music-title"> 我的歌单 — 梁博</h2>
-        <div className="song-list">
-          {songs.map((song) => (
-            <a
-              key={song.title}
-              href={song.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="song-card"
-            >
-              <span className="song-play">▶</span>
-              <div className="song-info">
-                <span className="song-name">{song.title}</span>
-                <span className="song-album">{song.album}</span>
-              </div>
-              <span className="song-arrow">→</span>
-            </a>
-          ))}
-        </div>
-        <Equalizer />
       </div>
     </>
   )
